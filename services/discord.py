@@ -37,9 +37,7 @@ class DiscordService():
                 self.__messages.append(message)
 
     def __send_message(self,message):
-        self.update_repo()
         body = {"mobile_network_type":"unknown","content":message,"nonce":"","tts":False,"flags":0}
-        print(f"wiadomośc wysłana")
         requests.post(url='https://discord.com/api/v9/channels/537601821339025410/messages',data=body,headers={"Authorization":self.__token})
 
     def has_new_messages(self):
