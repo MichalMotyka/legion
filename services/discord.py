@@ -36,6 +36,8 @@ class DiscordService():
                     for user in self.__users:
                         if user.get('uuid') == number:
                             message['content'] = message.get('content').replace('<@'+number+'>',user.get('autor'))
+                            if message.get('autor') is "Szortownik":
+                                message["read"] = True
                 self.__messages.append(message)
 
     def __send_message(self,message):
