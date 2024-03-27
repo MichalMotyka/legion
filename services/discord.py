@@ -42,6 +42,7 @@ class DiscordService():
         requests.post(url='https://discord.com/api/v9/channels/537601821339025410/messages',data=body,headers={"Authorization":self.__token})
 
     def has_new_messages(self):
+        print(len(self.__messages))
         print('has_new_messages')
         if self.__lastMessages != len(self.__messages):
             for x in range(0,(len(self.__messages) - self.__lastMessages)):
