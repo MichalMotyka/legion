@@ -18,7 +18,7 @@ class DiscordService():
     def read_messages(self):
         response = requests.get(url='https://discord.com/api/v9/channels/537601821339025410/messages?limit=10',headers={"Authorization":self.__token})
         if response.status_code == 200:
-            return  [{'uuid':message.get('author').get('id'),'autor':message.get('author').get('username')} for message in response.json()],[{"uuid":message.get('id'),'autor':message.get('author').get('username'),'content':message.get('content'),'mentions':message.get('mentions'),'reference':message.get('referenced_message').get('author').get('username') if message.get('referenced_message') else None} for message in response.json()]
+            return  [{'uuid':message.get('author').get('id'),'autor':message.get('author').get('username')} for message in response.json()],[{"uuid":message.get('id'),'autor':message.get('author').get('username'),'content':message.get('content'),'mentions':message.get('mentions'),'reference':message.get('referenced_message').get('author').get('username') if message.get('referenced_message') else None,"read":False} for message in response.json()]
      
     def update_repo(self):
         print('update_repo')
@@ -45,9 +45,9 @@ class DiscordService():
         print(len(self.__messages))
         print('has_new_messages')
         if self.__lastMessages != len(self.__messages):
-            for x in range(0,(len(self.__messages) - self.__lastMessages)):
-                message = self.__messages[x]
-                if len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
+            for message in self.__messages:
+                if not message.get("read") and len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
                     self.__send_message(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem. Używasz dużo sarkazmu, wulgarnych słów i obelg. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
+                    message["read"] = True
         self.update_repo()
         self.__lastMessages = len(self.__messages)
