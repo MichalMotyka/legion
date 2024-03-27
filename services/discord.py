@@ -16,7 +16,7 @@ class DiscordService():
         self.__token = 'MzQzNDM1MjE2NzUwMjQ3OTQ3.Gb2Zxf.MoyRr3E_4dHNKH5ASlauFpR-3uwHmy5CjD_XW4'
 
     def read_messages(self):
-        response = requests.get(url='https://discord.com/api/v9/channels/537601821339025410/messages?limit=50',headers={"Authorization":self.__token})
+        response = requests.get(url='https://discord.com/api/v9/channels/537601821339025410/messages?limit=10',headers={"Authorization":self.__token})
         if response.status_code == 200:
             return  [{'uuid':message.get('author').get('id'),'autor':message.get('author').get('username')} for message in response.json()],[{"uuid":message.get('id'),'autor':message.get('author').get('username'),'content':message.get('content'),'mentions':message.get('mentions'),'reference':message.get('referenced_message').get('author').get('username') if message.get('referenced_message') else None} for message in response.json()]
      
@@ -41,6 +41,7 @@ class DiscordService():
         id = int(self.__messages[-1].get('uuid'))
         id = id+1
         body = {"mobile_network_type":"unknown","content":message,"nonce":str(id),"tts":False,"flags":0}
+        print(f"wiadomośc wysłana")
         requests.post(url='https://discord.com/api/v9/channels/537601821339025410/messages',data=body,headers={"Authorization":self.__token})
 
     def has_new_messages(self):
