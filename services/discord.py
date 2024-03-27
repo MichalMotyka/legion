@@ -29,14 +29,14 @@ class DiscordService():
         
         regex_pattern = r'<@(\d+)>'
         for message in messages:
-            if message not in self.__messages:
+            if message.get('uuid') not in [msg.get('uuid') for msg in self.__messages]:
                 print("tu jestem")
                 matches = re.findall(regex_pattern, message.get('content'))
                 for number in [match for match in matches]:
                     for user in self.__users:
                         if user.get('uuid') == number:
                             message['content'] = message.get('content').replace('<@'+number+'>',user.get('autor'))
-                            if message.get('autor') is "Szortownik":
+                            if message.get('autor') == "szortownik":
                                 message["read"] = True
                 self.__messages.append(message)
 
