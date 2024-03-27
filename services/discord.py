@@ -43,4 +43,4 @@ class DiscordService():
                 message = self.__messages[x]
                 if len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
                     print(message.get('content'))
-                    print(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym hejterem i masz na imię szortownik. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
+                    print(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem i masz na imię szortownik. Używasz dużo sarkazmu. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
