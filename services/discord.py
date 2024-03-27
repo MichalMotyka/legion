@@ -38,9 +38,7 @@ class DiscordService():
 
     def __send_message(self,message):
         self.update_repo()
-        id = int(self.__messages[-1].get('uuid'))
-        id = id+1
-        body = {"mobile_network_type":"unknown","content":message,"nonce":str(id),"tts":False,"flags":0}
+        body = {"mobile_network_type":"unknown","content":message,"nonce":"","tts":False,"flags":0}
         print(f"wiadomośc wysłana")
         requests.post(url='https://discord.com/api/v9/channels/537601821339025410/messages',data=body,headers={"Authorization":self.__token})
 
