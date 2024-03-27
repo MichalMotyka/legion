@@ -30,6 +30,7 @@ class DiscordService():
         regex_pattern = r'<@(\d+)>'
         for message in messages:
             if message not in self.__messages:
+                print("tu jestem")
                 matches = re.findall(regex_pattern, message.get('content'))
                 for number in [match for match in matches]:
                     for user in self.__users:
