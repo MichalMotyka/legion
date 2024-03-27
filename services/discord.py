@@ -45,7 +45,7 @@ class DiscordService():
     def has_new_messages(self):
         if self.__lastMessages != len(self.__messages):
             for x in range(0,(len(self.__messages) - self.__lastMessages)):
-                self.__lastMessages = self.__lastMessages +1 
+                self.__lastMessages = self.__lastMessages + 2 
                 message = self.__messages[x]
                 if len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
                     self.__send_message(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem. Używasz dużo sarkazmu, wulgarnych słów i obelg. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
