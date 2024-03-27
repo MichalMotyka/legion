@@ -21,6 +21,7 @@ class DiscordService():
             return  [{'uuid':message.get('author').get('id'),'autor':message.get('author').get('username')} for message in response.json()],[{"uuid":message.get('id'),'autor':message.get('author').get('username'),'content':message.get('content'),'mentions':message.get('mentions'),'reference':message.get('referenced_message').get('author').get('username') if message.get('referenced_message') else None} for message in response.json()]
      
     def update_repo(self):
+        print('update_repo')
         users, messages = self.read_messages()
         for user in users:
             if user not in self.__users:
@@ -41,9 +42,11 @@ class DiscordService():
         requests.post(url='https://discord.com/api/v9/channels/537601821339025410/messages',data=body,headers={"Authorization":self.__token})
 
     def has_new_messages(self):
+        print('has_new_messages')
         if self.__lastMessages != len(self.__messages):
             for x in range(0,(len(self.__messages) - self.__lastMessages)):
-                self.__lastMessages = self.__lastMessages + 2 
                 message = self.__messages[x]
                 if len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
                     self.__send_message(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem. Używasz dużo sarkazmu, wulgarnych słów i obelg. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
+
+        self.__lastMessages = len(self.__messages)
