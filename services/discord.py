@@ -39,9 +39,9 @@ class DiscordService():
     def has_new_messages(self):
         if self.__lastMessages != len(self.__messages):
             for x in range(0,(len(self.__messages) - self.__lastMessages)):
+                self.__lastMessages = self.__lastMessages +1 
                 message = self.__messages[x]
                 if len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
                     print(message.get('content'))
                     print(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym hejterem i masz na imię szortownik. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
-        self.__lastMessages = len(self.__messages)
 
