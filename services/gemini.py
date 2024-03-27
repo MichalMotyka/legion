@@ -35,4 +35,4 @@ class GeminiService():
             response = model.generate_content(message,safety_settings=self.__safe)
             return response.text
         except Exception as e:
-            pass
+            print(e)
