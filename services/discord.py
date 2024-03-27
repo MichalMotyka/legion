@@ -36,7 +36,7 @@ class DiscordService():
                             message['content'] = message.get('content').replace('<@'+number+'>',user.get('autor'))
                 self.__messages.append(message)
 
-    def send_message(self,message):
+    def __send_message(self,message):
         self.update_repo()
         id = int(self.__messages[-1].get('uuid'))
         id = id+1

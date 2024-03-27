@@ -9,5 +9,4 @@ if __name__ == '__main__':
     discord_service = DiscordService.get_instance()
     SchedulerService.get_instance().create_jobs()
     discord_service.update_repo()
-    discord_service.send_message("TEST")
     SchedulerService.get_instance().wait_for_jobs()
