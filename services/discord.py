@@ -18,8 +18,8 @@ class DiscordService():
     def read_messages(self):
         response = requests.get(url='https://discord.com/api/v9/channels/1048966015268180019/messages?limit=50',headers={"Authorization":self.__token})
         if response.status_code == 200:
-            return  [{'uuid':message.get('author').get('id'),'autor':message.get('author').get('username')} for message in response.json()],[{'autor':message.get('author').get('username'),'content':message.get('content'),'mentions':message.get('mentions'),'reference':message.get('referenced_message').get('author').get('username') if message.get('referenced_message') else None} for message in response.json()]
-        
+            return  [{'uuid':message.get('author').get('id'),'autor':message.get('author').get('username')} for message in response.json()],[{"uuid":message.get('id'),'autor':message.get('author').get('username'),'content':message.get('content'),'mentions':message.get('mentions'),'reference':message.get('referenced_message').get('author').get('username') if message.get('referenced_message') else None} for message in response.json()]
+     
     def update_repo(self):
         users, messages = self.read_messages()
         for user in users:
@@ -35,6 +35,14 @@ class DiscordService():
                         if user.get('uuid') == number:
                             message['content'] = message.get('content').replace('<@'+number+'>',user.get('autor'))
                 self.__messages.append(message)
+        print(self.__messages)
+
+    def __send_message(self,message):
+        self.update_repo()
+        id = int(self.__messages[-1])
+        id = id+1
+        body = {"mobile_network_type":"unknown","content":message,"nonce":str(id),"tts":False,"flags":0}
+        requests.post(url='https://discord.com/api/v9/channels/537601821339025410/messages',data=body,headers={"Authorization":self.__token})
 
     def has_new_messages(self):
         if self.__lastMessages != len(self.__messages):
@@ -42,5 +50,4 @@ class DiscordService():
                 self.__lastMessages = self.__lastMessages +1 
                 message = self.__messages[x]
                 if len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
-                    print(message.get('content'))
-                    print(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem. Używasz dużo sarkazmu, wulgarnych słów i obelg. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
+                    self.__send_message(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem. Używasz dużo sarkazmu, wulgarnych słów i obelg. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
