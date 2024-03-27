@@ -45,13 +45,10 @@ class DiscordService():
         requests.post(url='https://discord.com/api/v9/channels/537601821339025410/messages',data=body,headers={"Authorization":self.__token})
 
     def has_new_messages(self):
-        print(len(self.__messages))
+
         print('has_new_messages')
-        if self.__lastMessages != len(self.__messages):
-            for message in self.__messages:
-                print(not message.get("read") and len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')])
-                if not message.get("read") and len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
-                    self.__send_message(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem. Używasz dużo sarkazmu, wulgarnych słów i obelg. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
-                    message["read"] = True
-            self.update_repo()
-            self.__lastMessages = len(self.__messages)
+        for message in self.__messages:
+            print(not message.get("read") and len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')])
+            if not message.get("read") and len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
+                self.__send_message(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem. Używasz dużo sarkazmu, wulgarnych słów i obelg. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
+                message["read"] = True
