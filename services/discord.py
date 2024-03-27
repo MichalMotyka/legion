@@ -29,7 +29,7 @@ class DiscordService():
         
         regex_pattern = r'<@(\d+)>'
         for message in messages:
-            if message.get('uuid') not in [msg.get('uuid') for msg in self.__messages]:
+            if message not in self.__messages:
                 matches = re.findall(regex_pattern, message.get('content'))
                 for number in [match for match in matches]:
                     for user in self.__users:
@@ -49,5 +49,5 @@ class DiscordService():
                 message = self.__messages[x]
                 if len(message.get('mentions')) > 0 and 'szortownik' in [user.get('username') for user in message.get('mentions')]:
                     self.__send_message(self.__gemini_service.generate_message("Wybraź sobie że jesteś forumowym chamskim i bezczelnym hejterem. Używasz dużo sarkazmu, wulgarnych słów i obelg. Odpowiadsz tylko jednym lub dwoma zdaniami, zawsze negatywnie w stosunku do opini podanej opini niżej:"+message.get('content')))
-
+        self.update_repo()
         self.__lastMessages = len(self.__messages)
